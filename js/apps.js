@@ -23,7 +23,7 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
           continue;
         }
 
-        var icon = app.manifest.icons['30'] || app.manifest.icons['60'];
+        var icon = app.manifest.icons['30'] || app.manifest.icons['60'] || app.manifest.icons['120'];
 
         if(!icon) {
           continue;
@@ -57,6 +57,7 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
             });
 
             World.addBody(engine.world, body);
+
           }
 
         })(url,i);
