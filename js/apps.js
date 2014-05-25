@@ -64,7 +64,7 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
           });
 
           body.app = app;
-          body.app.origin = _path;
+          //body.app.origin = _path;
 
           World.addBody(engine.world, body);
 
@@ -148,6 +148,10 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
   var g = false;
 
+  Events.on(engine, "mouseup", function(event) {
+    g = false;
+  });
+
   Events.on(engine, "mousedown", function(event) {
 
     // stop event firing twice
@@ -160,9 +164,9 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
     var apps = event.source.world.bodies;
 
-    console.log(apps);
-    console.log(x);
-    console.log(y);
+    //console.log(apps);
+    //console.log(x);
+    //console.log(y);
 
     for(var i = 0; i < apps.length; i++) {
 
@@ -170,8 +174,15 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
       if(x <= app.bounds.max.x && x >= app.bounds.min.x && y <= app.bounds.max.y && y >= app.bounds.min.y) {
         
-        console.log('hit app!');
-        console.log(app);
+        //console.log('hit app!');
+        //console.log(app);
+
+        var a = app.app;
+        if (a.manifest.entry_points) {
+          a.launch(0);
+        } else {
+          a.launch();
+        }
 
       }
 
