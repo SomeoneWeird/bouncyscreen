@@ -3,37 +3,14 @@
   margin: 0;
 }
 
+html,body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   background-color: transparent;
   text-align: center;
-  padding: 10px 0;
-  overflow-x: hidden;
-}
-
-body.active,
-body.noscroll {
-  overflow-y: hidden;
-}
-
-.tile {
-  display: inline-block;
-  width: calc(50% - 8px);
-  margin: auto;
-  background: no-repeat center;
-  background-size: cover;
-  margin-left: 4px;
-  margin-bottom: 4px;
-  background-color: #FFF;
-  transition: width 0.5s, height 0.5s, transform 0.5s;
-  text-align: left;
-  overflow: hidden;
-  position: relative;
-}
-
-.tile:before {
-  content: '';
-  display: block;
-  padding-top: 100%;
 }
 
 .notification {

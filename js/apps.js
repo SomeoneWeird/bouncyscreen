@@ -3,8 +3,6 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
 (function() {
 
-  var apps = [];
-
   function getAllApps() {
 
     navigator.mozApps.mgmt.getAll().onsuccess = function(event) {
@@ -33,40 +31,44 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
         var url = _path += icon;
 
-        if(!~url.indexOf('gaiamobile')) {
-          continue;
-        }
+        (function(url,i){
 
-        if(i > 20) {
-          continue;
-        }
+          //console.log("icon", url);
 
-        if(url == "app://communications.gaiamobile.org/style/icons/communication_30.png") {
-          continue;
-        }
+          var img = new Image;
+          img.onload = didLoad;
+          img.onerror = didFail;
+          img.src = url;
 
-        console.log(url);
-
-        apps.push(Matter.Bodies.rectangle(i, i, 64, 64, {
-          render: {
-            sprite: {
-              texture: url//"app://email.gaiamobile.org/style/icons/Email_60.png"
-            }
+          function didFail() {
+            console.log("error loading:", url);
           }
-        }));
+
+          function didLoad() {
+
+            console.log(url, img.width, img.height);
+
+            var body = Matter.Bodies.rectangle(50+(i%8)*64, 50+Math.floor(i/8)*64, 64, 64, {
+              render: {
+                sprite: {
+                  texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
+                }
+              }
+            });
+
+            World.addBody(engine.world, body);
+          }
+
+        })(url,i);
 
       }
-      // console.log(apps[0]);
-
-      render();
 
     };
 
   }
 
-  // setTimeout(function() {
-    getAllApps();
-  // }, 10000);
+  var width = document.body.offsetWidth;
+  var height = document.body.offsetHeight;
 
   var Engine = Matter.Engine,
     World = Matter.World,
@@ -79,6 +81,8 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
     var engine = Engine.create(document.body, {
       render: {
         options: {
+          width: width,
+          height: height,
           wireframes: false//,
           // background: 'http://brm.io/matter-js-demo/img/wall-bg.jpg'
         }
@@ -92,32 +96,33 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
     World.add(engine.world, mouseConstraint);
 
     // some settings
-    var offset = 10,
+    var ofs = 10,
+        thickness = 50,
         wallOptions = { 
           isStatic: true,
           render: {
-            visible: false
+            visible: true
           }
         };
 
-    var render = function() {
+    var cx = Math.floor(width/2);
+    var cy = Math.floor(height/2);
 
-      // add some invisible some walls to the world
-        World.add(engine.world, [
-        Bodies.rectangle(400, -offset, 800 + 2 * offset, 50, wallOptions),
-        Bodies.rectangle(400, 600 + offset, 800 + 2 * offset, 50, wallOptions),
-        Bodies.rectangle(800 + offset, 300, 50, 600 + 2 * offset, wallOptions),
-        Bodies.rectangle(-offset, 300, 50, 600 + 2 * offset, wallOptions)
-      ]);
+    // add some invisible some walls to the world
+    World.add(engine.world, [
+      Bodies.rectangle(cx,             -ofs,          width + 2*ofs, thickness,      wallOptions),
+      Bodies.rectangle(cx,             height+ofs,    width + 2*ofs, thickness,      wallOptions),
+      Bodies.rectangle(width+ofs,      cy,            thickness,     height + 2*ofs, wallOptions),
+      Bodies.rectangle(-ofs,           cy,            thickness,     height + 2*ofs, wallOptions)
+    ]);
 
-      for(var i = 0; i < apps.length; i++) {
-        World.addBody(engine.world, apps[i]);
-      }
+    // run the engine
+    Engine.run(engine);
 
-      // run the engine
-      Engine.run(engine);
+  // setTimeout(function() {
+    getAllApps();
+  // }, 10000);
 
-    }
 
 })();
 
