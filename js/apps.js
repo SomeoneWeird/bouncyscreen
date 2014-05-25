@@ -25,6 +25,14 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
         var icon = app.manifest.icons['30'] || app.manifest.icons['60'] || app.manifest.icons['120'];
 
+        var size;
+
+        for(var s in app.manifest.icons) {
+          if(app.manifest.icons[icon] == icon) {
+            size = parseInt(s);
+          }
+        }
+
         if(!icon) {
           continue;
         }
@@ -48,7 +56,7 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
             console.log(url, img.width, img.height);
 
-            var body = Matter.Bodies.rectangle(50+(i%8)*64, 50+Math.floor(i/8)*64, 64, 64, {
+            var body = Matter.Bodies.rectangle(50+(i%8)*s, 50+Math.floor(i/8)*s, s, s, {
               render: {
                 sprite: {
                   texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
