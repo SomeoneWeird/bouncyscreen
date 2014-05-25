@@ -19,15 +19,7 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
         if(!app.manifest.icons) {
           return;
-        }
-
-        //     launch: function() {
-//       if (this.entryPoint) {
-//         this.app.launch(this.entryPoint);
-//       } else {
-//         this.app.launch();
-//       }
-//     }
+        } 
 
         // find the largest icon url.
         var icon = app.manifest.icons['60'] || app.manifest.icons['30'];
@@ -37,8 +29,6 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
         }
 
         var url = _path + icon;
-
-        //console.log("icon", url);
 
         var img = new Image;
         img.onload = didLoad;
@@ -58,13 +48,12 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
           var body = Matter.Bodies.rectangle(50+(i%gridWidth)*64, 50+Math.floor(i/gridWidth)*64, s, s, {
             render: {
               sprite: {
-                texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
+                texture: url
               }
             }
           });
 
           body.app = app;
-          //body.app.origin = _path;
 
           World.addBody(engine.world, body);
 
@@ -76,66 +65,61 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
   }
 
-  var width = document.body.offsetWidth;
+  var width  = document.body.offsetWidth;
   var height = document.body.offsetHeight;
 
-  var Engine = Matter.Engine,
-    World = Matter.World,
-    Body = Matter.Body,
-    Bodies = Matter.Bodies,
-    Constraint = Matter.Constraint,
-    Composites = Matter.Composites,
-    MouseConstraint = Matter.MouseConstraint,
-    Events = Matter.Events;
+  var Engine          = Matter.Engine;
+  var World           = Matter.World;
+  var Body            = Matter.Body;
+  var Bodies          = Matter.Bodies;
+  var Constraint      = Matter.Constraint;
+  var Composites      = Matter.Composites;
+  var MouseConstraint = Matter.MouseConstraint;
+  var Events          = Matter.Events;
 
-    var engine = Engine.create(document.body, {
-      render: {
-        options: {
-          width: width,
-          height: height,
-          wireframes: false//,
-          // background: 'http://brm.io/matter-js-demo/img/wall-bg.jpg'
-        }
+  var engine = Engine.create(document.body, {
+    render: {
+      options: {
+        width:      width,
+        height:     height,
+        wireframes: false
       }
-    });
+    }
+  });
 
-    var mouseConstraint = MouseConstraint.create(engine);
-    World.add(engine.world, mouseConstraint);
+  var mouseConstraint = MouseConstraint.create(engine);
+  World.add(engine.world, mouseConstraint);
 
-    var mouseConstraint = MouseConstraint.create(engine);
-    World.add(engine.world, mouseConstraint);
+  var mouseConstraint = MouseConstraint.create(engine);
+  World.add(engine.world, mouseConstraint);
 
-    // some settings
-    var ofs = 30,
-        thickness = 100,
-        wallOptions = { 
-          isStatic: true,
-          render: {
-            visible: true
-          }
-        };
+  // some settings
+  var ofs = 30,
+      thickness = 100,
+      wallOptions = { 
+        isStatic: true,
+        render: {
+          visible: true
+        }
+      };
 
-    var cx = Math.floor(width/2);
-    var cy = Math.floor(height/2);
+  var cx = Math.floor(width/2);
+  var cy = Math.floor(height/2);
 
-    var gridWidth = Math.floor(width/64);
-    console.log("grid width", gridWidth);
+  var gridWidth = Math.floor(width/64);
+  console.log("grid width", gridWidth);
 
-    // add some invisible some walls to the world
-    World.add(engine.world, [
-      Bodies.rectangle(cx,             -ofs,          width + 2*ofs, thickness,      wallOptions),
-      Bodies.rectangle(cx,             height+ofs,    width + 2*ofs, thickness,      wallOptions),
-      Bodies.rectangle(width+ofs,      cy,            thickness,     height + 2*ofs, wallOptions),
-      Bodies.rectangle(-ofs,           cy,            thickness,     height + 2*ofs, wallOptions)
-    ]);
+  // add some invisible some walls to the world
+  World.add(engine.world, [
+    Bodies.rectangle(cx,             -ofs,          width + 2*ofs, thickness,      wallOptions),
+    Bodies.rectangle(cx,             height+ofs,    width + 2*ofs, thickness,      wallOptions),
+    Bodies.rectangle(width+ofs,      cy,            thickness,     height + 2*ofs, wallOptions),
+    Bodies.rectangle(-ofs,           cy,            thickness,     height + 2*ofs, wallOptions)
+  ]);
 
-    // run the engine
-    Engine.run(engine);
+  Engine.run(engine);
 
-  // setTimeout(function() {
-    getAllApps();
-  // }, 10000);
-
+  getAllApps();
 
   var x = 0, y = 0;
 
@@ -164,18 +148,11 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
     var apps = event.source.world.bodies;
 
-    //console.log(apps);
-    //console.log(x);
-    //console.log(y);
-
     for(var i = 0; i < apps.length; i++) {
 
       var app = apps[i];
 
       if(x <= app.bounds.max.x && x >= app.bounds.min.x && y <= app.bounds.max.y && y >= app.bounds.min.y) {
-        
-        //console.log('hit app!');
-        //console.log(app);
 
         var a = app.app;
         if (a.manifest.entry_points) {
