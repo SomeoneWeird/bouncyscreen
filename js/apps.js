@@ -21,14 +21,22 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
           return;
         }
 
+        //     launch: function() {
+//       if (this.entryPoint) {
+//         this.app.launch(this.entryPoint);
+//       } else {
+//         this.app.launch();
+//       }
+//     }
+
         // find the largest icon url.
-        var icon = app.manifest.icons['120'] || app.manifest.icons['60'] || app.manifest.icons['30'];
+        var icon = app.manifest.icons['60'] || app.manifest.icons['30'];
 
         if(!icon) {
           return;
         }
 
-        var url = _path += icon;
+        var url = _path + icon;
 
         //console.log("icon", url);
 
@@ -55,6 +63,9 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
             }
           });
 
+          body.app = app;
+          body.app.origin = _path;
+
           World.addBody(engine.world, body);
 
         }
@@ -74,7 +85,8 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
     Bodies = Matter.Bodies,
     Constraint = Matter.Constraint,
     Composites = Matter.Composites,
-    MouseConstraint = Matter.MouseConstraint;
+    MouseConstraint = Matter.MouseConstraint,
+    Events = Matter.Events;
 
     var engine = Engine.create(document.body, {
       render: {
@@ -124,6 +136,48 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
     getAllApps();
   // }, 10000);
 
+
+  var x = 0, y = 0;
+
+  Events.on(engine, "mousemove",  function(event) {
+
+    x = event.mouse.position.x;
+    y = event.mouse.position.y;
+
+  });
+
+  var g = false;
+
+  Events.on(engine, "mousedown", function(event) {
+
+    // stop event firing twice
+    if(!g) {
+      g = true;
+      return;
+    } else {
+      g = false;
+    }
+
+    var apps = event.source.world.bodies;
+
+    console.log(apps);
+    console.log(x);
+    console.log(y);
+
+    for(var i = 0; i < apps.length; i++) {
+
+      var app = apps[i];
+
+      if(x <= app.bounds.max.x && x >= app.bounds.min.x && y <= app.bounds.max.y && y >= app.bounds.min.y) {
+        
+        console.log('hit app!');
+        console.log(app);
+
+      }
+
+    }
+
+  });
 
 })();
 
