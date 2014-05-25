@@ -9,68 +9,62 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
       // console.log(event.target.result);
 
-      for(var i = 0; i < event.target.result.length; i++) {
-
-        var app = event.target.result[i];
+      event.target.result.forEach(function(app, i) {
 
         if (HIDDEN_ROLES.indexOf(app.manifest.role) !== -1) {
-          continue;
+          return;
         }
 
         var _path = app.origin;
 
         if(!app.manifest.icons) {
-          continue;
+          return;
         }
 
-        var icon = app.manifest.icons['30'] || app.manifest.icons['60'] || app.manifest.icons['120'];
+        // find the largest icon url.
+        var icon = /*app.manifest.icons['120'] ||*/ app.manifest.icons['60'] || app.manifest.icons['30'];
 
-        var size;
+        if(!icon) {
+          return;
+        }
 
+        var size = 32;
         for(var s in app.manifest.icons) {
           if(app.manifest.icons[icon] == icon) {
             size = parseInt(s);
           }
         }
 
-        if(!icon) {
-          continue;
-        }
-
         var url = _path += icon;
 
-        (function(url,i){
+        //console.log("icon", url);
 
-          //console.log("icon", url);
+        var img = new Image;
+        img.onload = didLoad;
+        img.onerror = didFail;
+        img.src = url;
 
-          var img = new Image;
-          img.onload = didLoad;
-          img.onerror = didFail;
-          img.src = url;
+        function didFail() {
+          console.log("error loading:", url);
+        }
 
-          function didFail() {
-            console.log("error loading:", url);
-          }
+        function didLoad() {
 
-          function didLoad() {
+          console.log(url, img.width, img.height);
 
-            console.log(url, img.width, img.height);
-
-            var body = Matter.Bodies.rectangle(50+(i%8)*s, 50+Math.floor(i/8)*s, s, s, {
-              render: {
-                sprite: {
-                  texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
-                }
+          var body = Matter.Bodies.rectangle(50+(i%gridWidth)*64, 50+Math.floor(i/gridWidth)*64, size, size, {
+            render: {
+              sprite: {
+                texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
               }
-            });
+            }
+          });
 
-            World.addBody(engine.world, body);
+          World.addBody(engine.world, body);
 
-          }
+        }
 
-        })(url,i);
-
-      }
+      });
 
     };
 
@@ -105,8 +99,8 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
     World.add(engine.world, mouseConstraint);
 
     // some settings
-    var ofs = 10,
-        thickness = 50,
+    var ofs = 30,
+        thickness = 100,
         wallOptions = { 
           isStatic: true,
           render: {
@@ -116,6 +110,9 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
     var cx = Math.floor(width/2);
     var cy = Math.floor(height/2);
+
+    var gridWidth = Math.floor(width/64);
+    console.log("grid width", gridWidth);
 
     // add some invisible some walls to the world
     World.add(engine.world, [
