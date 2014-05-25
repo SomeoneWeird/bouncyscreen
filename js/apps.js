@@ -37,9 +37,15 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
           continue;
         }
 
-        if(i > 10) {
+        if(i > 20) {
           continue;
         }
+
+        if(url == "app://communications.gaiamobile.org/style/icons/communication_30.png") {
+          continue;
+        }
+
+        console.log(url);
 
         apps.push(Matter.Bodies.rectangle(i, i, 64, 64, {
           render: {
