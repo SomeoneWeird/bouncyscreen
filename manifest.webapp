@@ -3,6 +3,7 @@
   "description": "FirefoxOS Homescreen with physics.",
   "launch_path": "/index.html",
   "type": "certified",
+  "role": "homescreen",
   "developer": {
     "name": "Adam Brady",
     "url": "https://github.com/SomeoneWeird/"
