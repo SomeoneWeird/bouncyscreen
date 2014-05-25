@@ -1,6 +1,5 @@
 var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
-
 (function() {
 
   function getAllApps() {
@@ -94,14 +93,14 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
   World.add(engine.world, mouseConstraint);
 
   // some settings
-  var ofs = 30,
-      thickness = 100,
-      wallOptions = { 
-        isStatic: true,
-        render: {
-          visible: true
-        }
-      };
+  var ofs         = 30;
+  var thickness   = 100;
+  var wallOptions = { 
+    isStatic: true,
+    render: {
+      visible: true
+    }
+  };
 
   var cx = Math.floor(width/2);
   var cy = Math.floor(height/2);
