@@ -22,17 +22,10 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
         }
 
         // find the largest icon url.
-        var icon = /*app.manifest.icons['120'] ||*/ app.manifest.icons['60'] || app.manifest.icons['30'];
+        var icon = app.manifest.icons['120'] || app.manifest.icons['60'] || app.manifest.icons['30'];
 
         if(!icon) {
           return;
-        }
-
-        var size = 32;
-        for(var s in app.manifest.icons) {
-          if(app.manifest.icons[icon] == icon) {
-            size = parseInt(s);
-          }
         }
 
         var url = _path += icon;
@@ -52,7 +45,9 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
           console.log(url, img.width, img.height);
 
-          var body = Matter.Bodies.rectangle(50+(i%gridWidth)*64, 50+Math.floor(i/gridWidth)*64, size, size, {
+          var s = img.width;
+
+          var body = Matter.Bodies.rectangle(50+(i%gridWidth)*64, 50+Math.floor(i/gridWidth)*64, s, s, {
             render: {
               sprite: {
                 texture: url //"app://email.gaiamobile.org/style/icons/Email_60.png"
