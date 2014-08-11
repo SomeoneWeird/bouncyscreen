@@ -128,6 +128,13 @@ var HIDDEN_ROLES = ['system', 'keyboard', 'homescreen'];
 
   Engine.run(engine);
 
+  var updateGravity = function(event) {
+    engine.world.gravity.y = (event.beta / 360) * 4;
+    engine.world.gravity.x = (event.gamma / 360) * 4;
+  }
+
+  window.addEventListener("deviceorientation", updateGravity);
+
   getAllApps();
 
   var x = 0, y = 0;
