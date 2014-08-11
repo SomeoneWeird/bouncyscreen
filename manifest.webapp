@@ -3,18 +3,17 @@
   "description": "FirefoxOS Homescreen with physics.",
   "launch_path": "/index.html",
   "type": "certified",
-  "role": "homescreen",
   "developer": {
     "name": "Adam Brady",
     "url": "https://github.com/SomeoneWeird/"
   },
   "permissions": {
-    "webapps-manage":{}
+    "webapps-manage": {}
   },
   "locales": {
     "en-US": {
-    "name": "Bouncy Screen",
-    "description": "FirefoxOS Homescreen with physics."
+      "name": "Bouncy Screen",
+      "description": "FirefoxOS Homescreen with physics."
     }
   },
   "default_locale": "en-US",
@@ -23,6 +22,5 @@
   },
   "orientation": "portrait-primary",
   "activities": {},
-
   "messages": []
 }
